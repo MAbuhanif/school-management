@@ -26,4 +26,7 @@ Route::prefix('v1')->group(function () {
 
     Route::get('grades', [GradeController::class, 'index']);
     Route::post('grades', [GradeController::class, 'store']);
+
+    Route::post('uploads', [\App\Http\Controllers\Api\V1\FileUploadController::class, 'upload']);
+    Route::get('files/access', [\App\Http\Controllers\Api\V1\FileUploadController::class, 'access'])->name('files.access');
 });
