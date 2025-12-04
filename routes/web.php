@@ -24,4 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'role:teacher'])->post('/attendance', function () {
+    return response()->json(['message' => 'Attendance marked']);
+});
+
 require __DIR__.'/auth.php';
