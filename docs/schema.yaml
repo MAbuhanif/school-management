@@ -1,0 +1,156 @@
+models:
+  User:
+    columns:
+      id: bigInteger, primary, auto_increment
+      name: string
+      email: string, unique
+      email_verified_at: timestamp, nullable
+      password: string
+      role: enum(admin, teacher, student, parent)
+      remember_token: string, nullable
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      hasOne: [Student, Teacher]
+    indexes: [email]
+
+  Student:
+    columns:
+      id: bigInteger, primary, auto_increment
+      user_id: bigInteger, foreign_key(users.id)
+      dob: date
+      gender: enum(male, female, other)
+      address: text
+      phone: string
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [User, ClassRoom]
+      hasMany: [Attendance, Grade, Enrollment]
+    indexes: [user_id]
+
+  Teacher:
+    columns:
+      id: bigInteger, primary, auto_increment
+      user_id: bigInteger, foreign_key(users.id)
+      qualification: string
+      specialization: string
+      phone: string
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [User]
+      hasMany: [Course]
+    indexes: [user_id]
+
+  ClassRoom:
+    columns:
+      id: bigInteger, primary, auto_increment
+      name: string
+      section: string
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      hasMany: [Student, Course]
+
+  Subject:
+    columns:
+      id: bigInteger, primary, auto_increment
+      name: string
+      code: string, unique
+      description: text, nullable
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      hasMany: [Course]
+
+  Course:
+    columns:
+      id: bigInteger, primary, auto_increment
+      name: string
+      class_room_id: bigInteger, foreign_key(class_rooms.id)
+      teacher_id: bigInteger, foreign_key(teachers.id)
+      subject_id: bigInteger, foreign_key(subjects.id)
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [ClassRoom, Teacher, Subject]
+      hasMany: [Enrollment, Attendance, Grade]
+    indexes: [class_room_id, teacher_id, subject_id]
+
+  Enrollment:
+    columns:
+      id: bigInteger, primary, auto_increment
+      student_id: bigInteger, foreign_key(students.id)
+      course_id: bigInteger, foreign_key(courses.id)
+      enrolled_at: timestamp
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [Student, Course]
+    indexes: [student_id, course_id]
+
+  Attendance:
+    columns:
+      id: bigInteger, primary, auto_increment
+      student_id: bigInteger, foreign_key(students.id)
+      course_id: bigInteger, foreign_key(courses.id)
+      date: date
+      status: enum(present, absent, late, excused)
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [Student, Course]
+    indexes: [student_id, course_id, date]
+
+  Grade:
+    columns:
+      id: bigInteger, primary, auto_increment
+      student_id: bigInteger, foreign_key(students.id)
+      course_id: bigInteger, foreign_key(courses.id)
+      assessment_name: string
+      score: decimal(5,2)
+      max_score: decimal(5,2)
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [Student, Course]
+    indexes: [student_id, course_id]
+
+  Fee:
+    columns:
+      id: bigInteger, primary, auto_increment
+      student_id: bigInteger, foreign_key(students.id)
+      amount: decimal(10,2)
+      due_date: date
+      type: string
+      status: enum(paid, unpaid, partial)
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [Student]
+      hasMany: [Payment]
+    indexes: [student_id]
+
+  Payment:
+    columns:
+      id: bigInteger, primary, auto_increment
+      fee_id: bigInteger, foreign_key(fees.id)
+      amount: decimal(10,2)
+      paid_at: timestamp
+      method: enum(cash, card, online)
+      transaction_id: string, nullable
+      created_at: timestamp
+      updated_at: timestamp
+    relationships:
+      belongsTo: [Fee]
+    indexes: [fee_id]
+
+  Notice:
+    columns:
+      id: bigInteger, primary, auto_increment
+      title: string
+      content: text
+      target_role: enum(all, teacher, student, parent)
+      created_at: timestamp
+      updated_at: timestamp
