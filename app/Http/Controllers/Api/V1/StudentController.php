@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Services\StudentService;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
+use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {
@@ -17,39 +19,26 @@ class StudentController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->all());
+        return StudentResource::collection($this->service->all());
     }
 
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'class_room_id' => 'required|exists:class_rooms,id',
-            'dob' => 'required|date',
-            'gender' => 'required|string',
-            'address' => 'required|string',
-            'phone' => 'required|string',
-        ]);
-
-        return response()->json($this->service->create($data), 201);
+        $student = $this->service->create($request->validated());
+        return (new StudentResource($student))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show($id)
     {
-        return response()->json($this->service->find($id));
+        return new StudentResource($this->service->find($id));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateStudentRequest $request, $id)
     {
-        $data = $request->validate([
-            'class_room_id' => 'sometimes|exists:class_rooms,id',
-            'dob' => 'sometimes|date',
-            'gender' => 'sometimes|string',
-            'address' => 'sometimes|string',
-            'phone' => 'sometimes|string',
-        ]);
-
-        return response()->json($this->service->update($id, $data));
+        $student = $this->service->update($id, $request->validated());
+        return new StudentResource($student);
     }
 
     public function destroy($id)

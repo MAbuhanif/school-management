@@ -19,7 +19,7 @@ class StudentTest extends TestCase
         $response = $this->getJson('/api/v1/students');
 
         $response->assertStatus(200)
-            ->assertJsonCount(3);
+            ->assertJsonCount(3, 'data');
     }
 
     public function test_can_create_student()
