@@ -22,6 +22,9 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        if (! $request->user()->hasRole('teacher')) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
         $data = $request->validate([
             'name' => 'required|string',
             'class_room_id' => 'required|exists:class_rooms,id',
@@ -39,6 +42,9 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (! $request->user()->hasRole('teacher')) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
         $data = $request->validate([
             'name' => 'sometimes|string',
             'class_room_id' => 'sometimes|exists:class_rooms,id',
@@ -49,8 +55,11 @@ class CourseController extends Controller
         return response()->json($this->service->update($id, $data));
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        if (! $request->user()->hasRole('teacher')) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
         $this->service->delete($id);
         return response()->json(null, 204);
     }
