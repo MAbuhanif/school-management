@@ -1,17 +1,25 @@
+import '../css/app.css';
 import './bootstrap';
-import React from 'react';
+
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 
-function App() {
-    return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <h1 className="text-4xl font-bold text-blue-600">Hello from React!</h1>
-        </div>
-    );
-}
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-const container = document.getElementById('app');
-if (container) {
-    const root = createRoot(container);
-    root.render(<App />);
-}
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.jsx`,
+            import.meta.glob('./Pages/**/*.jsx'),
+        ),
+    setup({ el, App, props }) {
+        const root = createRoot(el);
+
+        root.render(<App {...props} />);
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});
