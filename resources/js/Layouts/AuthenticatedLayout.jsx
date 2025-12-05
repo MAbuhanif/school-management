@@ -30,6 +30,60 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('students.index')}
+                                    active={route().current('students.*')}
+                                >
+                                    Students
+                                </NavLink>
+                                <NavLink
+                                    href={route('teachers.index')}
+                                    active={route().current('teachers.*')}
+                                >
+                                    Teachers
+                                </NavLink>
+                                <NavLink
+                                    href={route('courses.index')}
+                                    active={route().current('courses.*')}
+                                >
+                                    Courses
+                                </NavLink>
+                                <NavLink
+                                    href={route('enrollments.index')}
+                                    active={route().current('enrollments.*')}
+                                >
+                                    Enrollments
+                                </NavLink>
+                                <NavLink
+                                    href={route('attendance.index')}
+                                    active={route().current('attendance.*')}
+                                >
+                                    Attendance
+                                </NavLink>
+                                <NavLink
+                                    href={route('grades.index')}
+                                    active={route().current('grades.*')}
+                                >
+                                    Grades
+                                </NavLink>
+                                <NavLink
+                                    href={route('payments.index')}
+                                    active={route().current('payments.*')}
+                                >
+                                    Payments
+                                </NavLink>
+                                <NavLink
+                                    href={route('reports.index')}
+                                    active={route().current('reports.*')}
+                                >
+                                    Reports
+                                </NavLink>
+                                <NavLink
+                                    href={route('settings.index')}
+                                    active={route().current('settings.*')}
+                                >
+                                    Settings
+                                </NavLink>
                             </div>
                         </div>
 
@@ -133,6 +187,60 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('students.index')}
+                            active={route().current('students.*')}
+                        >
+                            Students
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('teachers.index')}
+                            active={route().current('teachers.*')}
+                        >
+                            Teachers
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('courses.index')}
+                            active={route().current('courses.*')}
+                        >
+                            Courses
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('enrollments.index')}
+                            active={route().current('enrollments.*')}
+                        >
+                            Enrollments
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('attendance.index')}
+                            active={route().current('attendance.*')}
+                        >
+                            Attendance
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('grades.index')}
+                            active={route().current('grades.*')}
+                        >
+                            Grades
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('payments.index')}
+                            active={route().current('payments.*')}
+                        >
+                            Payments
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('reports.index')}
+                            active={route().current('reports.*')}
+                        >
+                            Reports
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('settings.index')}
+                            active={route().current('settings.*')}
+                        >
+                            Settings
                         </ResponsiveNavLink>
                     </div>
 

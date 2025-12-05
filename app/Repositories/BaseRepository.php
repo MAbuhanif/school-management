@@ -14,9 +14,9 @@ abstract class BaseRepository
         $this->model = $model;
     }
 
-    public function all(): Collection
+    public function all(array $relations = []): Collection
     {
-        return $this->model->all();
+        return $this->model->with($relations)->get();
     }
 
     public function find(int $id): ?Model

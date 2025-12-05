@@ -13,9 +13,9 @@ abstract class BaseService
         $this->repository = $repository;
     }
 
-    public function all()
+    public function all(array $relations = [])
     {
-        return $this->repository->all();
+        return $this->repository->all($relations);
     }
 
     public function find(int $id)
