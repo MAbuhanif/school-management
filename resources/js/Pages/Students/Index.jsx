@@ -167,17 +167,33 @@ export default function Index({ auth, students, filters, classRooms, sort_by, so
                                      >
                                         Export CSV
                                      </button>
-                                    <Link
-                                        href={route('students.create')}
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                    >
-                                        Add Student
-                                    </Link>
+                                    {auth.can.create_student && (
+                                        <Link
+                                            href={route('students.create')}
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        >
+                                            Add Student
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                             
                             <Table
-                                columns={tableColumns}
+                                columns={[
+                                    columns[0], // Checkbox - Consider hiding if no bulk actions?
+                                    { header: sortableHeader('Name', 'name'), accessor: 'user.name', render: (_, r) => r.user.name },
+                                    { header: sortableHeader('Email', 'email'), accessor: 'user.email', render: (_, r) => r.user.email },
+                                    { header: sortableHeader('Class', 'class_room_id'), accessor: 'class_room.name', render: (val, row) => row.class_room?.name || 'N/A' },
+                                    {
+                                        header: 'Actions', accessor: 'id', render: (val, row) => (
+                                            <>
+                                                {row.can.edit && (
+                                                    <Link href={route('students.edit', row.id)} className="text-indigo-600 hover:text-indigo-900 mr-4">Edit</Link>
+                                                )}
+                                            </>
+                                        )
+                                    }
+                                ]}
                                 data={students.data}
                             />
                             

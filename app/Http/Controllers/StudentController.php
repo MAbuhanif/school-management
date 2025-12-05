@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use App\Services\StudentService;
 use App\Http\Resources\StudentResource;
 use Inertia\Inertia;
@@ -9,11 +10,9 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    protected $service;
-
-    public function __construct(StudentService $service)
+    public function __construct(protected StudentService $service)
     {
-        $this->service = $service;
+        $this->authorizeResource(Student::class, 'student');
     }
 
     /**
@@ -37,12 +36,8 @@ class StudentController extends Controller
         ]);
     }
 
-    public function bulkDestroy(Request $request)
-    {
-        $ids = $request->input('ids');
-        $this->service->bulkDelete($ids);
-        return redirect()->back();
-    }
+
+
 
     public function export(Request $request)
     {

@@ -26,6 +26,10 @@ class StudentResource extends JsonResource
             'updated_at' => $this->updated_at,
             'user' => $this->whenLoaded('user'),
             'class_room' => $this->whenLoaded('classRoom'),
+            'can' => [
+                'edit' => $request->user() ? $request->user()->can('update', $this->resource) : false,
+                'delete' => $request->user() ? $request->user()->can('delete', $this->resource) : false,
+            ],
         ];
     }
 }
