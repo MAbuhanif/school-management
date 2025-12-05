@@ -49,3 +49,5 @@ Route::middleware(['auth', 'role:teacher'])->post('/attendance', function () {
 
 Route::post('stripe/webhook', [\App\Http\Controllers\PaymentController::class, 'webhook'])->name('cashier.webhook'); // Using custom handler
 
+require __DIR__.'/auth.php';
+

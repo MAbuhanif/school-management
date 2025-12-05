@@ -50,6 +50,15 @@ A comprehensive School Management System built with Laravel 12, Inertia.js, and 
     ```
     *Note: The default setup uses SQLite. Ensure `DB_CONNECTION=sqlite` is set in `.env`.*
 
+    **Required Environment Variables (Add to .env):**
+    ```ini
+    STRIPE_KEY=pk_test_...
+    STRIPE_SECRET=sk_test_...
+    STRIPE_WEBHOOK_SECRET=whsec_...
+    ```
+
+    > **Security Note**: Never commit your real `.env` file or API keys. For production, use a secure secrets manager like GitHub Secrets, Laravel Vapor, or Laravel Forge to inject these values.
+
 5.  **Run Migrations**
     ```bash
     php artisan migrate
