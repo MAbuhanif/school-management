@@ -11,6 +11,19 @@ export default function AuthenticatedLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+    const navItems = [
+        { name: 'Dashboard', route: 'dashboard', active: 'dashboard', roles: ['admin', 'teacher', 'student'] },
+        { name: 'Students', route: 'students.index', active: 'students.*', roles: ['admin', 'teacher'] },
+        { name: 'Teachers', route: 'teachers.index', active: 'teachers.*', roles: ['admin'] },
+        { name: 'Courses', route: 'courses.index', active: 'courses.*', roles: ['admin', 'teacher', 'student'] },
+        { name: 'Enrollments', route: 'enrollments.index', active: 'enrollments.*', roles: ['admin', 'teacher', 'student'] },
+        { name: 'Attendance', route: 'attendance.index', active: 'attendance.*', roles: ['admin', 'teacher', 'student'] },
+        { name: 'Grades', route: 'grades.index', active: 'grades.*', roles: ['admin', 'teacher', 'student'] },
+        { name: 'Payments', route: 'payments.index', active: 'payments.*', roles: ['admin', 'student'] },
+        { name: 'Reports', route: 'reports.index', active: 'reports.*', roles: ['admin'] },
+        { name: 'Settings', route: 'settings.index', active: 'settings.*', roles: ['admin'] },
+    ];
+
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="border-b border-gray-100 bg-white">
@@ -24,66 +37,17 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    href={route('students.index')}
-                                    active={route().current('students.*')}
-                                >
-                                    Students
-                                </NavLink>
-                                <NavLink
-                                    href={route('teachers.index')}
-                                    active={route().current('teachers.*')}
-                                >
-                                    Teachers
-                                </NavLink>
-                                <NavLink
-                                    href={route('courses.index')}
-                                    active={route().current('courses.*')}
-                                >
-                                    Courses
-                                </NavLink>
-                                <NavLink
-                                    href={route('enrollments.index')}
-                                    active={route().current('enrollments.*')}
-                                >
-                                    Enrollments
-                                </NavLink>
-                                <NavLink
-                                    href={route('attendance.index')}
-                                    active={route().current('attendance.*')}
-                                >
-                                    Attendance
-                                </NavLink>
-                                <NavLink
-                                    href={route('grades.index')}
-                                    active={route().current('grades.*')}
-                                >
-                                    Grades
-                                </NavLink>
-                                <NavLink
-                                    href={route('payments.index')}
-                                    active={route().current('payments.*')}
-                                >
-                                    Payments
-                                </NavLink>
-                                <NavLink
-                                    href={route('reports.index')}
-                                    active={route().current('reports.*')}
-                                >
-                                    Reports
-                                </NavLink>
-                                <NavLink
-                                    href={route('settings.index')}
-                                    active={route().current('settings.*')}
-                                >
-                                    Settings
-                                </NavLink>
+                                {navItems.map((item) => (
+                                    (!user.role || item.roles.includes(user.role)) && (
+                                        <NavLink
+                                            key={item.name}
+                                            href={route(item.route)}
+                                            active={route().current(item.active)}
+                                        >
+                                            {item.name}
+                                        </NavLink>
+                                    )
+                                ))}
                             </div>
                         </div>
 
@@ -182,66 +146,17 @@ export default function AuthenticatedLayout({ header, children }) {
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('students.index')}
-                            active={route().current('students.*')}
-                        >
-                            Students
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('teachers.index')}
-                            active={route().current('teachers.*')}
-                        >
-                            Teachers
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('courses.index')}
-                            active={route().current('courses.*')}
-                        >
-                            Courses
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('enrollments.index')}
-                            active={route().current('enrollments.*')}
-                        >
-                            Enrollments
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('attendance.index')}
-                            active={route().current('attendance.*')}
-                        >
-                            Attendance
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('grades.index')}
-                            active={route().current('grades.*')}
-                        >
-                            Grades
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('payments.index')}
-                            active={route().current('payments.*')}
-                        >
-                            Payments
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('reports.index')}
-                            active={route().current('reports.*')}
-                        >
-                            Reports
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('settings.index')}
-                            active={route().current('settings.*')}
-                        >
-                            Settings
-                        </ResponsiveNavLink>
+                        {navItems.map((item) => (
+                             (!user.role || item.roles.includes(user.role)) && (
+                                <ResponsiveNavLink
+                                    key={item.name}
+                                    href={route(item.route)}
+                                    active={route().current(item.active)}
+                                >
+                                    {item.name}
+                                </ResponsiveNavLink>
+                            )
+                        ))}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">

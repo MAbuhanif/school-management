@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('students/bulk-destroy', [\App\Http\Controllers\StudentController::class, 'bulkDestroy'])->name('students.bulk-destroy');
+    Route::get('students/export', [\App\Http\Controllers\StudentController::class, 'export'])->name('students.export');
     Route::resource('students', \App\Http\Controllers\StudentController::class);
     Route::resource('teachers', \App\Http\Controllers\TeacherController::class);
     Route::resource('courses', \App\Http\Controllers\CourseController::class);

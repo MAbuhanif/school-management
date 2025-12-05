@@ -13,6 +13,7 @@ class Student extends Model
     protected $fillable = [
         'user_id',
         'class_room_id',
+        'profile_picture',
         'dob',
         'gender',
         'address',
