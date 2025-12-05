@@ -33,7 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::post('attendance', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('grades', [\App\Http\Controllers\GradeController::class, 'index'])->name('grades.index');
     Route::post('grades', [\App\Http\Controllers\GradeController::class, 'store'])->name('grades.store');
+    Route::get('grades/{student}/report-card', [\App\Http\Controllers\GradeController::class, 'reportCard'])->name('grades.report-card');
     Route::get('payments', [\App\Http\Controllers\PaymentController::class, 'index'])->name('payments.index');
+    Route::post('payments', [\App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
+    Route::post('payments/{invoice}/checkout', [\App\Http\Controllers\PaymentController::class, 'checkout'])->name('payments.checkout');
+    Route::get('payments/success', [\App\Http\Controllers\PaymentController::class, 'success'])->name('payments.success');
+    Route::get('payments/cancel', [\App\Http\Controllers\PaymentController::class, 'cancel'])->name('payments.cancel');
     Route::get('reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
 });
@@ -42,4 +47,5 @@ Route::middleware(['auth', 'role:teacher'])->post('/attendance', function () {
     return response()->json(['message' => 'Attendance marked']);
 });
 
-require __DIR__.'/auth.php';
+Route::post('stripe/webhook', [\App\Http\Controllers\PaymentController::class, 'webhook'])->name('cashier.webhook'); // Using custom handler
+

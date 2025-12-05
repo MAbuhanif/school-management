@@ -11,4 +11,8 @@ class GradeRepository extends BaseRepository
     {
         parent::__construct($model);
     }
+    public function updateOrCreateGrade(array $attributes, array $values)
+    {
+        return $this->model->updateOrCreate($attributes, $values);
+    }
 }

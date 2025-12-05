@@ -10,4 +10,18 @@ class GradeService extends BaseService
     {
         parent::__construct($repository);
     }
+    public function updateOrCreateGrade(array $data)
+    {
+        return $this->repository->updateOrCreateGrade(
+            [
+                'student_id' => $data['student_id'],
+                'course_id' => $data['course_id'],
+                'assessment_name' => $data['assessment_name'],
+            ],
+            [
+                'score' => $data['score'],
+                'max_score' => $data['max_score'],
+            ]
+        );
+    }
 }

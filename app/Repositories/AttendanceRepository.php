@@ -11,4 +11,8 @@ class AttendanceRepository extends BaseRepository
     {
         parent::__construct($model);
     }
+    public function updateOrCreateAttendance(array $attributes, array $values)
+    {
+        return $this->model->updateOrCreate($attributes, $values);
+    }
 }
