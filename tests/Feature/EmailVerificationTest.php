@@ -33,18 +33,9 @@ class EmailVerificationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        // It might redirect to verify-email if the dashboard middleware requires verification
-        // $response->assertRedirect('/dashboard'); 
-        dump($response->headers->get('Location'));
-        $response->assertStatus(302); // Check it is a redirect
-        // $response->assertRedirect(route('verification.notice', absolute: false));
+        $response->assertRedirect(route('dashboard', absolute: false));
 
-        // Check if Registered event was dispatched
         Event::assertDispatched(Registered::class);
-        
-        // Use a real event dispatch to check if the listener creates the notification
-        // Re-run without Event::fake() specifically for this check or manually trigger listener logic?
-        // Actually, better is to check if the notification is sent.
     }
 
     public function test_notification_sent_on_registered_event()
