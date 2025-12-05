@@ -13,7 +13,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('v1')->name('api.')->group(function () {
+Route::prefix('v1')->name('api.')->middleware('throttle:api')->group(function () {
     Route::apiResource('students', StudentController::class);
     Route::apiResource('teachers', TeacherController::class);
     Route::apiResource('courses', CourseController::class);

@@ -14,12 +14,12 @@ class FileUploadController extends Controller
     {
         $file = $request->file('file');
         $directory = $request->input('directory', 'uploads');
-        $disk = $request->input('disk', 'local');
+        $disk = 'local'; // Force private storage
 
         $path = $file->store($directory, $disk);
 
         $url = URL::temporarySignedRoute(
-            'files.access',
+            'api.files.access',
             now()->addMinutes(60),
             ['path' => $path, 'disk' => $disk]
         );
@@ -37,7 +37,7 @@ class FileUploadController extends Controller
         }
 
         $path = $request->query('path');
-        $disk = $request->query('disk', 'local');
+        $disk = 'local'; // Only allow access to private local files
 
         if (! Storage::disk($disk)->exists($path)) {
             abort(404);

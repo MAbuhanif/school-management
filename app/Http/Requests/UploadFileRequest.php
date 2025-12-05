@@ -22,9 +22,8 @@ class UploadFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10240', // 10MB max
-            'directory' => 'nullable|string',
-            'disk' => 'nullable|in:local,public,s3',
+            'file' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx,txt|max:10240', // 10MB max, strict types
+            'directory' => 'nullable|string|max:100|regex:/^[a-zA-Z0-9_\-\/]+$/', // Prevent path traversal
         ];
     }
 }
