@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TwoFactorController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,10 +19,19 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // 2FA Routes (Setup)
+    Route::get('/two-factor', [TwoFactorController::class, 'enable'])->name('two-factor.enable');
+    Route::post('/two-factor', [TwoFactorController::class, 'store'])->name('two-factor.store');
+    Route::delete('/two-factor', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    
+    // 2FA Challenge (Login)
+    Route::get('/two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'create'])->name('two-factor.login');
+    Route::post('/two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'store']);
 
     Route::post('students/bulk-destroy', [\App\Http\Controllers\StudentController::class, 'bulkDestroy'])->name('students.bulk-destroy');
     Route::get('students/export', [\App\Http\Controllers\StudentController::class, 'export'])->name('students.export');
