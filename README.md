@@ -20,17 +20,55 @@ A comprehensive School Management System built with Laravel 12, Inertia.js, and 
 
 ### Prerequisites
 
-- PHP 8.2+
-- Composer
-- Node.js & npm
+- PHP 8.2+ (Run locally)
+- Composer (Run locally)
+- Node.js & npm (Run locally)
+- Docker & Docker Compose (Run with Docker)
 
 ### Installation
 
+#### Standard Setup
 1.  **Clone the repository**
     ```bash
     git clone https://github.com/yourusername/school-management.git
     cd school-management
     ```
+
+#### Docker Setup (Recommended)
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/school-management.git
+    cd school-management
+    ```
+2.  **Environment Setup**
+    ```bash
+    cp .env.example .env
+    ```
+    Configure `.env` to use the Docker database credentials:
+    ```ini
+    DB_CONNECTION=mysql
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=laravel
+    DB_USERNAME=laravel
+    DB_PASSWORD=root
+    
+    REDIS_HOST=redis
+    ```
+3.  **Start Containers**
+    ```bash
+    docker-compose -f docker-compose.dev.yml up -d --build
+    ```
+4.  **Install Dependencies**
+    ```bash
+    docker-compose -f docker-compose.dev.yml exec app composer install
+    docker-compose -f docker-compose.dev.yml exec app php artisan key:generate
+    docker-compose -f docker-compose.dev.yml exec app php artisan migrate
+    ```
+5.  **Access Application**
+    Visit `http://localhost:8000`
+
+### Standard Setup (Alternative)
 
 2.  **Install PHP dependencies**
     ```bash
