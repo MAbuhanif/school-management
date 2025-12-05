@@ -21,12 +21,22 @@ class UpdateStudentRequest extends FormRequest
      */
     public function rules(): array
     {
+        $studentId = $this->route('student');
+        if (is_string($studentId) || is_numeric($studentId)) {
+            $student = \App\Models\Student::findOrFail($studentId);
+        } else {
+            $student = $studentId;
+        }
+        
         return [
-            'class_room_id' => 'sometimes|exists:class_rooms,id',
-            'dob' => 'sometimes|date',
-            'gender' => 'sometimes|string',
-            'address' => 'sometimes|string',
-            'phone' => 'sometimes|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $student->user_id,
+            'dob' => 'required|date',
+            'gender' => 'required|string',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'class_room_id' => 'required|exists:class_rooms,id',
+            'profile_picture' => 'nullable|image|max:2048',
         ];
     }
 }

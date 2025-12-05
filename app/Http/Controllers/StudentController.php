@@ -79,19 +79,9 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(\App\Http\Requests\StoreStudentRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'dob' => 'required|date',
-            'gender' => 'required|string',
-            'address' => 'required|string',
-            'phone' => 'required|string',
-            'class_room_id' => 'required|exists:class_rooms,id',
-            'profile_picture' => 'nullable|image|max:2048', // 2MB Max
-        ]);
+        $validated = $request->validated();
 
         $profilePicturePath = null;
         if ($request->hasFile('profile_picture')) {
@@ -143,21 +133,12 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(\App\Http\Requests\UpdateStudentRequest $request, string $id)
     {
         $student = $this->service->find($id);
         $user = $student->user;
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'dob' => 'required|date',
-            'gender' => 'required|string',
-            'address' => 'required|string',
-            'phone' => 'required|string',
-            'class_room_id' => 'required|exists:class_rooms,id',
-            'profile_picture' => 'nullable|image|max:2048',
-        ]);
+        $validated = $request->validated();
 
         $profilePicturePath = $student->profile_picture;
         if ($request->hasFile('profile_picture')) {

@@ -22,12 +22,15 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'class_room_id' => 'required|exists:class_rooms,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
             'dob' => 'required|date',
             'gender' => 'required|string',
             'address' => 'required|string',
             'phone' => 'required|string',
+            'class_room_id' => 'required|exists:class_rooms,id',
+            'profile_picture' => 'nullable|image|max:2048',
         ];
     }
 }
