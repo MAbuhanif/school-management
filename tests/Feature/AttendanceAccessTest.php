@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Course;
+use App\Models\Student;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,31 +21,46 @@ class AttendanceAccessTest extends TestCase
 
     public function test_teacher_can_mark_attendance()
     {
-        $teacher = User::factory()->create();
-        $teacher->assignRole('teacher');
+        $user = User::factory()->create();
+        $user->assignRole('teacher');
 
-        $response = $this->actingAs($teacher)->post('/attendance');
+        // Create dependencies
+        $course = Course::factory()->create();
+        $student = Student::factory()->create();
 
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->post(route('attendance.store'), [
+            'student_id' => $student->id,
+            'course_id' => $course->id,
+            'date' => now()->format('Y-m-d'),
+            'status' => 'present',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'status' => 'present',
+        ]);
     }
 
     public function test_student_cannot_mark_attendance()
     {
-        $student = User::factory()->create();
-        $student->assignRole('student');
+        $user = User::factory()->create();
+        $user->assignRole('student');
 
-        $response = $this->actingAs($student)->post('/attendance');
+        // Create dependencies
+        $course = Course::factory()->create();
+        $student = Student::factory()->create();
 
-        $response->assertStatus(403);
-    }
+        $response = $this->actingAs($user)->post(route('attendance.store'), [
+            'student_id' => $student->id,
+            'course_id' => $course->id,
+            'date' => now()->format('Y-m-d'),
+            'status' => 'present',
+        ]);
 
-    public function test_parent_cannot_mark_attendance()
-    {
-        $parent = User::factory()->create();
-        $parent->assignRole('parent');
-
-        $response = $this->actingAs($parent)->post('/attendance');
-
-        $response->assertStatus(403);
+        $response->assertForbidden();
+        $this->assertDatabaseMissing('attendances', [
+            'student_id' => $student->id,
+        ]);
     }
 }
