@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Repositories\GradeRepository;
 
+/**
+ * @property GradeRepository $repository
+ */
 class GradeService extends BaseService
 {
     public function __construct(GradeRepository $repository)

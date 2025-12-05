@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Repositories\AttendanceRepository;
 
+/**
+ * @property AttendanceRepository $repository
+ */
 class AttendanceService extends BaseService
 {
     public function __construct(AttendanceRepository $repository)

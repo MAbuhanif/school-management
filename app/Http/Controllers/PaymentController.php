@@ -54,25 +54,30 @@ class PaymentController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $checkoutInv = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'usd',
-                    'product_data' => [
-                        'name' => $invoice->description,
-                    ],
-                    'unit_amount' => $invoice->amount * 100, // Cents
+        $lineItems = [[
+            'price_data' => [
+                'currency' => 'usd',
+                'product_data' => [
+                    'name' => $invoice->description,
                 ],
-                'quantity' => 1,
-            ]],
+                // CAST to integer to avoid type confusion if amount is string/decimal
+                'unit_amount' => (int) ($invoice->amount * 100), 
+            ],
+            'quantity' => 1,
+        ]];
+
+        $sessionParams = [
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
             'mode' => 'payment',
             'success_url' => route('payments.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('payments.cancel'),
             'metadata' => [
                 'invoice_id' => $invoice->id,
             ],
-        ]);
+        ];
+
+        $checkoutInv = Session::create($sessionParams);
 
         $invoice->update(['stripe_session_id' => $checkoutInv->id]);
 

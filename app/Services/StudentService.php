@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Repositories\StudentRepository;
 
+/**
+ * @property StudentRepository $repository
+ */
 class StudentService extends BaseService
 {
     public function __construct(StudentRepository $repository)
