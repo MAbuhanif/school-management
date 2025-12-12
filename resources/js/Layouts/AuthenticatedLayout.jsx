@@ -3,10 +3,22 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useToast } from '@/Components/Toast';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const { flash } = usePage().props;
+    const { addToast } = useToast();
+
+    useEffect(() => {
+        if (flash?.success) {
+            addToast(flash.success, 'success');
+        }
+        if (flash?.error) {
+            addToast(flash.error, 'error');
+        }
+    }, [flash]);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -38,7 +50,9 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 {navItems.map((item) => (
-                                    (!user.role || item.roles.includes(user.role)) && (
+                                    item.roles.some((role) =>
+                                        user.roles.some((r) => r.name === role || r.name === 'super_admin')
+                                    ) && (
                                         <NavLink
                                             key={item.name}
                                             href={route(item.route)}
@@ -147,7 +161,9 @@ export default function AuthenticatedLayout({ header, children }) {
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         {navItems.map((item) => (
-                             (!user.role || item.roles.includes(user.role)) && (
+                             item.roles.some((role) =>
+                                user.roles.some((r) => r.name === role || r.name === 'super_admin')
+                            ) && (
                                 <ResponsiveNavLink
                                     key={item.name}
                                     href={route(item.route)}

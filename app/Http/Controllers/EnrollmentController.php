@@ -11,7 +11,10 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        //
+        $enrollments = \App\Models\Enrollment::with(['student.user', 'course'])->paginate(10);
+        return \Inertia\Inertia::render('Enrollments/Index', [
+            'enrollments' => $enrollments,
+        ]);
     }
 
     /**

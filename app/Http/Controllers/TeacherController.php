@@ -11,7 +11,10 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        //
+        $teachers = \App\Models\Teacher::with('user')->paginate(10);
+        return \Inertia\Inertia::render('Teachers/Index', [
+            'teachers' => $teachers,
+        ]);
     }
 
     /**

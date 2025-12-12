@@ -37,6 +37,10 @@ class HandleInertiaRequests extends Middleware
                     'create_student' => $request->user() ? $request->user()->can('create', \App\Models\Student::class) : false,
                 ],
             ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
         ];
     }
 }

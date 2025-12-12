@@ -82,6 +82,11 @@ class DatabaseSeeder extends Seeder
             ->recycle($fees)
             ->create();
 
+        // Create Invoices
+        \App\Models\Invoice::factory(20)
+            ->recycle($students)
+            ->create();
+
         // Create Notices
         Notice::factory(10)->create();
     }

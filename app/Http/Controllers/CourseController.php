@@ -25,7 +25,20 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Courses/Create');
+        $classRooms = \App\Models\ClassRoom::all();
+        $teachers = \App\Models\Teacher::with('user')->get()->map(function($teacher) {
+            return [
+                'id' => $teacher->id,
+                'name' => $teacher->user->name
+            ];
+        });
+        $subjects = \App\Models\Subject::all();
+
+        return Inertia::render('Courses/Create', [
+            'classRooms' => $classRooms,
+            'teachers' => $teachers,
+            'subjects' => $subjects,
+        ]);
     }
 
     /**

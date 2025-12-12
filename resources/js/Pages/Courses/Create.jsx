@@ -4,12 +4,15 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import Select from '@/Components/Select';
 
-export default function Create({ auth }) {
+export default function Create({ auth, classRooms, teachers, subjects }) {
     const { data, setData, post, processing, errors } = useForm({
-        title: '',
-        code: '',
+        name: '',
         description: '',
+        class_room_id: '',
+        teacher_id: '',
+        subject_id: '',
     });
 
     const submit = (e) => {
@@ -30,30 +33,17 @@ export default function Create({ auth }) {
                         <div className="p-6 text-gray-900">
                             <form onSubmit={submit}>
                                 <div>
-                                    <InputLabel htmlFor="title" value="Title" />
+                                    <InputLabel htmlFor="name" value="Name" />
                                     <TextInput
-                                        id="title"
-                                        name="title"
-                                        value={data.title}
+                                        id="name"
+                                        name="name"
+                                        value={data.name}
                                         className="mt-1 block w-full"
                                         isFocused={true}
-                                        onChange={(e) => setData('title', e.target.value)}
+                                        onChange={(e) => setData('name', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.title} className="mt-2" />
-                                </div>
-
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="code" value="Code" />
-                                    <TextInput
-                                        id="code"
-                                        name="code"
-                                        value={data.code}
-                                        className="mt-1 block w-full"
-                                        onChange={(e) => setData('code', e.target.value)}
-                                        required
-                                    />
-                                    <InputError message={errors.code} className="mt-2" />
+                                    <InputError message={errors.name} className="mt-2" />
                                 </div>
 
                                 <div className="mt-4">
@@ -66,6 +56,39 @@ export default function Create({ auth }) {
                                         onChange={(e) => setData('description', e.target.value)}
                                     />
                                     <InputError message={errors.description} className="mt-2" />
+                                </div>
+
+                                <div className="mt-4">
+                                    <Select
+                                        id="class_room_id"
+                                        label="Classroom"
+                                        value={data.class_room_id}
+                                        options={classRooms.map(c => ({ value: c.id, label: c.name }))}
+                                        onChange={(e) => setData('class_room_id', e.target.value)}
+                                        error={errors.class_room_id}
+                                    />
+                                </div>
+
+                                <div className="mt-4">
+                                    <Select
+                                        id="teacher_id"
+                                        label="Teacher"
+                                        value={data.teacher_id}
+                                        options={teachers.map(t => ({ value: t.id, label: t.name }))}
+                                        onChange={(e) => setData('teacher_id', e.target.value)}
+                                        error={errors.teacher_id}
+                                    />
+                                </div>
+
+                                <div className="mt-4">
+                                    <Select
+                                        id="subject_id"
+                                        label="Subject"
+                                        value={data.subject_id}
+                                        options={subjects.map(s => ({ value: s.id, label: s.name }))}
+                                        onChange={(e) => setData('subject_id', e.target.value)}
+                                        error={errors.subject_id}
+                                    />
                                 </div>
 
                                 <div className="flex items-center justify-end mt-4">
