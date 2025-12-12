@@ -1,4 +1,3 @@
-```javascript
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, router } from '@inertiajs/react';
 import Select from '@/Components/Select';
@@ -197,4 +196,4 @@ export default function Index({ auth, classRooms, courses, students, filters }) 
         </AuthenticatedLayout>
     );
 }
-```
+
