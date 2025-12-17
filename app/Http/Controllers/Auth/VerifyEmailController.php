@@ -14,13 +14,20 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
+        \Illuminate\Support\Facades\Log::info('VerifyEmailController hit for User ID: ' . $request->user()->id);
+
         if ($request->user()->hasVerifiedEmail()) {
+            \Illuminate\Support\Facades\Log::info('User already verified.');
             return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
-        }
+        $request->user()->forceFill([
+            'email_verified_at' => now(),
+        ])->save();
+        
+        \Illuminate\Support\Facades\Log::info('User verified via forceFill. New status: ' . ($request->user()->fresh()->hasVerifiedEmail() ? 'VERIFIED' : 'NOT VERIFIED'));
+
+        event(new Verified($request->user()));
 
         return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
     }

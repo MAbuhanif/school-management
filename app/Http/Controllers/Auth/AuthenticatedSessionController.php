@@ -33,6 +33,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        \Illuminate\Support\Facades\Log::info('Login Successful. Intended URL: ' . redirect()->intended()->getTargetUrl());
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

@@ -24,23 +24,25 @@ export default function Index({ auth, courses }) {
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teacher</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {courses?.data?.map((course) => (
                                         <tr key={course.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap">{course.title}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{course.code}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{course.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{course.subject?.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{course.teacher?.user?.name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <Link href={route('courses.edit', course.id)} className="text-indigo-600 hover:text-indigo-900 mr-4">Edit</Link>
                                             </td>
                                         </tr>
                                     )) || (
                                         <tr>
-                                            <td colSpan="3" className="px-6 py-4 text-center text-gray-500">No courses found.</td>
+                                            <td colSpan="4" className="px-6 py-4 text-center text-gray-500">No courses found.</td>
                                         </tr>
                                     )}
                                 </tbody>
