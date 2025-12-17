@@ -15,6 +15,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/approval-pending', function () {
+    return Inertia::render('Auth/ApprovalPending');
+})->name('approval.notice')->middleware('auth');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -55,7 +59,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
 });
 
-Route::post('stripe/webhook', [\App\Http\Controllers\PaymentController::class, 'webhook'])->name('cashier.webhook'); // Using custom handler
+    Route::middleware(['role:super_admin'])->group(function () {
+        Route::get('/approvals', [\App\Http\Controllers\ApprovalController::class, 'index'])->name('approvals.index');
+        Route::post('/approvals/{user}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('approvals.approve');
+        Route::delete('/approvals/{user}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('approvals.reject');
+    });
+
+    Route::post('stripe/webhook', [\App\Http\Controllers\PaymentController::class, 'webhook'])->name('cashier.webhook'); // Using custom handler
 
 require __DIR__.'/auth.php';
 

@@ -11,6 +11,9 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        role: 'student', // Default role
+        student_id: '',
+        employee_id: '',
     });
 
     const submit = (e) => {
@@ -76,6 +79,54 @@ export default function Register() {
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="role" value="Register As" />
+                    <select
+                        id="role"
+                        name="role"
+                        value={data.role}
+                        className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                        onChange={(e) => setData('role', e.target.value)}
+                        required
+                    >
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                    <InputError message={errors.role} className="mt-2" />
+                </div>
+
+                {data.role === 'student' && (
+                    <div className="mt-4">
+                        <InputLabel htmlFor="student_id" value="Student ID" />
+                        <TextInput
+                            id="student_id"
+                            name="student_id"
+                            value={data.student_id}
+                            className="mt-1 block w-full"
+                            autoComplete="off"
+                            onChange={(e) => setData('student_id', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.student_id} className="mt-2" />
+                    </div>
+                )}
+
+                {data.role === 'teacher' && (
+                    <div className="mt-4">
+                        <InputLabel htmlFor="employee_id" value="Employee ID" />
+                        <TextInput
+                            id="employee_id"
+                            name="employee_id"
+                            value={data.employee_id}
+                            className="mt-1 block w-full"
+                            autoComplete="off"
+                            onChange={(e) => setData('employee_id', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.employee_id} className="mt-2" />
+                    </div>
+                )}
 
                 <div className="mt-4">
                     <InputLabel

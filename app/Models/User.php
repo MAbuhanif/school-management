@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'google2fa_secret',
+        'is_approved',
     ];
 
     public function student()
